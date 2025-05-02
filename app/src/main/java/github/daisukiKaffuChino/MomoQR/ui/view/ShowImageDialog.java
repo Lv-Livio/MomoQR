@@ -43,16 +43,12 @@ public class ShowImageDialog extends Dialog {
 
         imageView = findViewById(R.id.dialog_imageView);
         handler.sendEmptyMessage(0);
+
         Window w = getWindow();
-        WindowManager.LayoutParams lp = null;
         if (w != null) {
-            lp = w.getAttributes();
-            lp.x = 0;
-            lp.y = 40;
-            w.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            w.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
-        onWindowAttributesChanged(lp);
+
         imageView.setOnClickListener(view -> dismiss());
     }
 

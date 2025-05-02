@@ -15,7 +15,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -59,6 +61,18 @@ public class ResultFragment extends BaseBindingFragment<FragmentResultBinding> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = getBinding();
+
+        GestureDetector gestureDetector = new GestureDetector(requireContext(), new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                if (generatedQRBitmap != null) {
+                    new ShowImageDialog(requireContext(), actionUtil.saveBitmapPrivate(generatedQRBitmap)).show();
+                }
+                return super.onDoubleTap(e);
+            }
+        });
+
+        binding.remakeCodeImg.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
 
         initTips();
 

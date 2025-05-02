@@ -86,26 +86,14 @@ public class ActionUtil {
     }
 
     public String saveBitmapPrivate(Bitmap bitmap) {
-        if (bitmap == null) {  //检查是否已生成二维码
-            toast(R.string.qr_not_prepare_ok);
-            return null;
-        }
-        File file = context.getDir("img", Context.MODE_PRIVATE);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        String fileName = "QR" + System.currentTimeMillis() + ".png";
-        String filePath = file + File.separator + fileName;
-        try {
-            FileOutputStream outStream = new FileOutputStream(filePath);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-            outStream.flush();
-            outStream.close();
-            return filePath;
+        File file = new File(context.getCacheDir(), "qr_temp.png");
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
         } catch (IOException e) {
-            e.fillInStackTrace();
+            e.printStackTrace();
             return null;
         }
+        return file.getAbsolutePath();
     }
 
     public static void detectIntentAndStart(String content) {
